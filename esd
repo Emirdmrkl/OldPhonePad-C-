@@ -1,0 +1,143 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+class OldPhonePadConverter
+{
+    public static string OldPhonePad(string input)
+    {
+        Dictionary<char, string> numberToLetters = new Dictionary<char, string>()
+        {
+            {'2', "ABC"},
+            {'3', "DEF"},
+            {'4', "GHI"},
+            {'5', "JKL"},
+            {'6', "MNO"},
+            {'7', "PQRS"},
+            {'8', "TUV"},
+            {'9', "WXYZ"}
+        };
+
+        char prevButton = ' ';
+        int buttonCount = 1;
+        int prevcount = 0;
+        bool ToAppend = false;
+        StringBuilder resultBuilder = new StringBuilder();
+        // looping the each character in the input string
+        foreach (char c in input)
+        {
+            if (Char.IsDigit(c)) //checking on the character is digit or not
+            {
+                if (c == prevButton) //checking on the character is same as previous character or not
+                {
+                    buttonCount++;
+                    ToAppend = false;
+                    
+                }
+                else
+                {
+                    prevcount = buttonCount;
+                    buttonCount = 1; // Reset count for a new button press
+                    ToAppend = true;
+                }
+
+                if (buttonCount > numberToLetters[c].Length)
+                {
+                    buttonCount = 1; // Reset count if it exceeds the number of letters
+                }
+                if (ToAppend)
+                {
+                    resultBuilder.Append(numberToLetters[c][prevcount - 1]);
+                }
+
+                 
+                // Append the correct letter based on count
+                // Console.WriteLine(resultBuilder);
+                prevButton = c;
+            }
+            else if (c == '*')
+            {
+                if (resultBuilder.Length > 0)
+                {
+                    resultBuilder.Length--; // Remove last character
+                }
+            }
+            else if (c == '#')
+            {
+                break; // Exit the loop
+            }
+            else if (c == ' ')
+            {
+                prevButton = ' '; // Reset prevButton for the next word
+            }
+        }
+
+        return resultBuilder.ToString().TrimEnd();
+    }
+
+    public static void Main(string[] args)
+    {
+Consule.WriteLine(OldPhonePad(“666 555 3 7 44 666 66 33 7 2 3#”)
+    }
+}
+
+
+
+
+
+//And another example : 
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+public class OldPhonePadConverter
+{
+    public static string ConvertToNumbers(string inputString)
+    {
+        // Define the mapping of letters to numbers as per old phone keypad
+        Dictionary<char, char> letterToNumber = new Dictionary<char, char>
+        {
+            {'A', '2'}, {'B', '2'}, {'C', '2'},
+            {'D', '3'}, {'E', '3'}, {'F', '3'},
+            {'G', '4'}, {'H', '4'}, {'I', '4'},
+            {'J', '5'}, {'K', '5'}, {'L', '5'},
+            {'M', '6'}, {'N', '6'}, {'O', '6'},
+            {'P', '7'}, {'Q', '7'}, {'R', '7'}, {'S', '7'},
+            {'T', '8'}, {'U', '8'}, {'V', '8'},
+            {'W', '9'}, {'X', '9'}, {'Y', '9'}, {'Z', '9'},
+            {' ', '0'}, // Space character maps to '0'
+            // Add mapping for special characters if needed
+        };
+
+        // Convert input string to uppercase for uniformity
+        inputString = inputString.ToUpper();
+
+        // Initialize a StringBuilder to store the converted sequence of numbers
+        StringBuilder convertedNumbers = new StringBuilder();
+
+        // Iterate through each character in the input string
+        foreach (char c in inputString)
+        {
+            // If the character is found in the mapping, append the corresponding digit
+            if (letterToNumber.ContainsKey(c))
+            {
+                convertedNumbers.Append(letterToNumber[c]);
+            }
+            else
+            {
+                // If the character is not found in the mapping, simply append the character
+                convertedNumbers.Append(c);
+            }
+        }
+
+        return convertedNumbers.ToString();
+    }
+
+    // Example usage:
+    static void Main(string[] args)
+    {
+        string inputString = "OldPhonePad";
+        string outputNumbers = OldPhonePadConverter.ConvertToNumbers(inputString);
+        Console.WriteLine(outputNumbers);  // Output: 65374663723
+    }
+}
